@@ -27,7 +27,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'secret'
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+host_list = os.environ.get('DJANGO_ALLoweD_HOSTS', '')
+if host_list:
+    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'account.User'
+
+# Silence checks related to non-unique username
+SILENCED_SYSTEM_CHECKS = ['auth.E003']
 
 
 # Internationalization
