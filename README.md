@@ -37,3 +37,7 @@ Default: `secret`\*
 The secret key Django uses for certain security operations.
 
 \* The key is only set to a default if debug mode is enabled. This is to avoid having a default secret key in a production environment.
+
+## Testing
+
+Tests are run on each push using Travis CI.
