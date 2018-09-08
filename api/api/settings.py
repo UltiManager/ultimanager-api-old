@@ -27,9 +27,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'secret'
 
-host_list = os.environ.get('DJANGO_ALLoweD_HOSTS', '')
+host_list = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
 if host_list:
-    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+    ALLOWED_HOSTS = host_list.split(',')
 else:
     ALLOWED_HOSTS = []
 
