@@ -1,4 +1,4 @@
-de# UltiManager API
+# UltiManager API
 
 API for managing an ultimate Frisbee team.
 
