@@ -5,6 +5,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from account import managers
+
 
 class Email(models.Model):
     """
@@ -146,6 +148,9 @@ class User(PermissionsMixin, AbstractBaseUser):
         help_text=_('The last time the user was edited.'),
         verbose_name=_('time updated'),
     )
+
+    # Use our custom manager
+    objects = managers.UserManager()
 
     class Meta:
         ordering = ('time_created',)
