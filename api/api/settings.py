@@ -109,8 +109,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'account.User'
 
-# Silence checks related to non-unique username
-SILENCED_SYSTEM_CHECKS = ['auth.E003']
+# Use email authentication
+AUTHENTICATION_BACKENDS = ['account.authentication.EmailBackend']
+
+# Silence checks related to non-unique username since our authentication
+# backend doesn't use usernames.
+SILENCED_SYSTEM_CHECKS = ['auth.W004']
 
 
 # Internationalization
