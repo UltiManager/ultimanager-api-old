@@ -18,11 +18,43 @@ DJANGO_DEBUG=true
 
 The following environment variables can be used to configure the application.
 
+Note that if any of `DJANGO_DB_NAME`, `DJANGO_DB_PASSWORD`, or `DJANGO_DB_USER` are not set, we will fall back to a local Sqlite database.
+
 #### `DJANGO_ALLOWED_HOSTS`
 
 Default: `''`
 
 A comma separated list of hostnames allowed to access the application. This is only required when debug mode is disabled.
+
+#### `DJANGO_DB_HOST`
+
+Default: `localhost`
+
+The host for the Postgres DB to connect to.
+
+#### `DJANGO_DB_NAME`
+
+Default: `''`
+
+The name of the database to use.
+
+#### `DJANGO_DB_PASSWORD`
+
+Default: `''`
+
+The password to use when connecting to the Postgres database.
+
+#### `DJANGO_DB_PORT`
+
+Default: `5432`
+
+The port to use when connecting to the Postgres database.
+
+#### `DJANGO_DB_USER`
+
+Default: `''`
+
+The name of the user to connect to the Postgres database as.
 
 #### `DJANGO_DEBUG`
 
