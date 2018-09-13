@@ -7,6 +7,7 @@ name = "pypi"
 pytest = "*"
 pytest-django = "*"
 factory-boy = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.6"
