@@ -3,6 +3,7 @@ from typing import Type
 import factory
 
 import pytest
+from rest_framework import test
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -34,6 +35,14 @@ class UserFactory(factory.django.DjangoModelFactory):
         manager = cls._get_manager(model_class)
 
         return manager.create_user(*args, **kwargs)
+
+
+@pytest.fixture
+def api_client() -> test.APIClient:
+    """
+    Fixture to get an instance of the APIClient for making requests.
+    """
+    return test.APIClient()
 
 
 @pytest.fixture

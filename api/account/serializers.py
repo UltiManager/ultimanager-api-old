@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from rest_framework import serializers
 
 from account import models
@@ -9,11 +9,20 @@ class EmailVerificationSerializer(serializers.Serializer):
     Serializer for verifying an email address.
     """
     password = serializers.CharField(
+        help_text=ugettext_lazy(
+            "The password of the user who added the email address to their "
+            "account."
+        ),
         style={'input_type': 'password'},
         trim_whitespace=False,
         write_only=True,
     )
-    token = serializers.CharField(write_only=True)
+    token = serializers.CharField(
+        help_text=ugettext_lazy(
+            "The token that was emailed to the address being verified."
+        ),
+        write_only=True,
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
