@@ -1,7 +1,6 @@
 from typing import Type
 
 import factory
-
 import pytest
 
 
