@@ -25,6 +25,19 @@ class EmailAdmin(admin.ModelAdmin):
     search_fields = ('address', 'user__name')
 
 
+@admin.register(models.EmailVerification)
+class EmailVerificationAdmin(admin.ModelAdmin):
+    """
+    Admin for the EmailVerification model.
+    """
+    autocomplete_fields = ('email',)
+    date_hierarchy = 'time_created'
+    fields = ('email', 'time_created', 'token')
+    list_display = ('id', 'email', 'time_created')
+    readonly_fields = ('time_created', 'token')
+    search_fields = ('email__address', 'token')
+
+
 class UserAddForm(UserCreationForm):
     class Meta:
         fields = ('name',)

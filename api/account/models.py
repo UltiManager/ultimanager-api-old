@@ -3,9 +3,20 @@ import uuid
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import crypto
 from django.utils.translation import ugettext_lazy as _
 
 from account import managers
+
+
+def random_token():
+    """
+    Get a random token with 32 characters.
+
+    Returns:
+        A cryptographically secure random string of 32 characters.
+    """
+    return crypto.get_random_string(32)
 
 
 class Email(models.Model):
@@ -91,6 +102,67 @@ class Email(models.Model):
         self.address = self.normalize_address(self.address)
 
         super().save(*args, **kwargs)
+
+
+class EmailVerification(models.Model):
+    """
+    A token used to verify an email address.
+    """
+    email = models.ForeignKey(
+        'account.Email',
+        help_text=_('The email instance the verification is tied to.'),
+        on_delete=models.CASCADE,
+        related_name='verifications',
+        related_query_name='verification',
+        verbose_name=_('email address'),
+    )
+    time_created = models.DateTimeField(
+        auto_now_add=True,
+        help_text=_('The time the instance was created at.'),
+        verbose_name=_('time created'),
+    )
+    token = models.CharField(
+        default=random_token,
+        editable=False,
+        help_text=_('The token used to verify the associated email.'),
+        max_length=32,
+        verbose_name=_('token'),
+    )
+
+    class Meta:
+        ordering = ('time_created',)
+        verbose_name = _('email verification')
+        verbose_name_plural = _('email verifications')
+
+    def __repr__(self):
+        """
+        Get a string representation of the instance.
+
+        Returns:
+            A string containing the instance's ID and the email address
+            it is associated with.
+        """
+        return (f'EmailVerification(id={self.id}, '
+                f'email_address="{self.email.address}")')
+
+    def __str__(self):
+        """
+        Get a string describing the instance.
+
+        Returns:
+            A string indicating which email address the verification is
+            associated with.
+        """
+        return f'Email Verification for {self.email.address}'
+
+    def verify(self):
+        """
+        Verify the associated email address.
+        """
+        self.email.is_verified = True
+        self.email.save()
+
+        self.delete()
 
 
 class User(PermissionsMixin, AbstractBaseUser):
