@@ -1,3 +1,7 @@
+from unittest import mock
+
+from django.conf import settings
+
 from account import models
 
 
@@ -34,6 +38,29 @@ def test_save_normalize(email_factory):
     email.save()
 
     assert email.address == models.Email.normalize_address(address)
+
+
+def test_send_duplicate_notification(email_factory):
+    """
+    This method should send a notification to the owner of the email
+    that another user attempted to add the email to their account.
+    """
+    email = email_factory()
+
+    with mock.patch('account.models.email_utils.send_email') as mock_email:
+        email.send_duplicate_notification()
+
+    assert mock_email.call_count == 1
+    assert mock_email.call_args[1] == {
+        'context': {
+            'email': email.address,
+            'name': email.user.name,
+        },
+        'from_email': settings.DEFAULT_FROM_EMAIL,
+        'recipient_list': [email.address],
+        'subject': 'Duplicate Email Registration',
+        'template_name': 'account/emails/duplicate-email',
+    }
 
 
 def test_string_conversion(email_factory):

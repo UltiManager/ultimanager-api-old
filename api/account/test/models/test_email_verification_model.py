@@ -1,3 +1,7 @@
+from unittest import mock
+
+from django.conf import settings
+
 from account import models
 
 
@@ -19,6 +23,29 @@ def test_repr(email_verification_factory):
                 f'email_address="{verification.email.address}")')
 
     assert repr(verification) == expected
+
+
+def test_send_email(email_verification_factory):
+    """
+    This method should send a verification email to the associated email
+    address.
+    """
+    verification = email_verification_factory()
+
+    with mock.patch('account.models.email_utils.send_email') as mock_email:
+        verification.send_email()
+
+    assert mock_email.call_count == 1
+    assert mock_email.call_args[1] == {
+        'context': {
+            'name': verification.email.user.name,
+            'token': verification.token,
+        },
+        'from_email': settings.DEFAULT_FROM_EMAIL,
+        'recipient_list': [verification.email.address],
+        'subject': 'Please Verify Your Email',
+        'template_name': 'account/emails/verify-email',
+    }
 
 
 def test_string_conversion(email_verification_factory):

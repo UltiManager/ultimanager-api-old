@@ -162,3 +162,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', None)
 
 MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', None)
+
+
+# Email Settings
+
+DEFAULT_FROM_EMAIL = 'UltiManager No-Reply <no-reply@ultimanager.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

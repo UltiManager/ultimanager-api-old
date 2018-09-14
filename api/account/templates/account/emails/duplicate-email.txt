@@ -1,0 +1,5 @@
+{% extends 'account/emails/base.txt' %}{% block content %}Hello {{ name }},
+
+Someone attempted to register this email address ({{ email }}) to their account. If this was you, you can already sign in with this account. If this was not you, you can safely ignore this email.
+
+Please feel free to reach out to chathan@ultimanager.com with any questions.{% endblock %}

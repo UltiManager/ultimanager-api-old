@@ -1,0 +1,6 @@
+{% extends 'account/emails/base.txt' %}{% block content %}Hello {{ name }},
+
+Please use the following token to verify your email address:
+
+{{ token }}
+{% endblock %}

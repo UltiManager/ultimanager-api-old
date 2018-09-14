@@ -12,4 +12,10 @@ urlpatterns = [
         views.EmailVerificationView.as_view(),
         name='email-verification',
     ),
+
+    path(
+        'users/',
+        views.RegistrationView.as_view(),
+        name='registration',
+    ),
 ]

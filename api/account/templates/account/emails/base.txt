@@ -1,0 +1,11 @@
+{% block content %}{% endblock %}
+
+
+{% block closing %}Sincerely,
+The UltiManager Team{% endblock %}
+
+
+
+{% block footer %}
+This email was sent from an unmonitored account. For help, contact chathan@ultimanager.com.
+{% endblock %}

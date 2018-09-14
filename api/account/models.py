@@ -1,12 +1,18 @@
+import logging
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils import crypto
 from django.utils.translation import ugettext_lazy as _
+import email_utils
 
 from account import managers
+
+
+logger = logging.getLogger(__name__)
 
 
 def random_token():
@@ -103,6 +109,27 @@ class Email(models.Model):
 
         super().save(*args, **kwargs)
 
+    def send_duplicate_notification(self):
+        """
+        Send a notification to the user who owns this address letting
+        them know a duplicate registration attempt was made.
+        """
+        email_utils.send_email(
+            context={
+                'email': self.address,
+                'name': self.user.name,
+            },
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.address],
+            subject=_('Duplicate Email Registration'),
+            template_name='account/emails/duplicate-email',
+        )
+
+        logger.info(
+            "Sent duplicate email registration notification to %r",
+            self,
+        )
+
 
 class EmailVerification(models.Model):
     """
@@ -154,6 +181,23 @@ class EmailVerification(models.Model):
             associated with.
         """
         return f'Email Verification for {self.email.address}'
+
+    def send_email(self):
+        """
+        Send a verification email to the associated email address.
+        """
+        email_utils.send_email(
+            context={
+                'name': self.email.user.name,
+                'token': self.token,
+            },
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.email.address],
+            subject=_('Please Verify Your Email'),
+            template_name='account/emails/verify-email',
+        )
+
+        logger.info("Sent verification %r to email %r", self, self.email)
 
     def verify(self):
         """
