@@ -168,3 +168,13 @@ MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', None)
 
 DEFAULT_FROM_EMAIL = 'UltiManager No-Reply <no-reply@ultimanager.com>'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Django Rest Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}

@@ -20,5 +20,6 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('account/', include('account.urls', namespace='account')),
     path('admin/', admin.site.urls),
+    path('auth/', include('auth.urls', namespace='auth')),
     path('docs/', include_docs_urls('UltiManager API')),
 ]
