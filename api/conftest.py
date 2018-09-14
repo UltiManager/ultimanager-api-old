@@ -1,3 +1,4 @@
+import os
 from typing import Type
 
 import factory
@@ -43,6 +44,22 @@ def api_client() -> test.APIClient:
     Fixture to get an instance of the APIClient for making requests.
     """
     return test.APIClient()
+
+
+@pytest.fixture
+def env():
+    """
+    Fixture that allows for modification of environment variables.
+
+    After the test, the environment is rolled back to its previous
+    state.
+    """
+    orginal_env = os.environ.copy()
+
+    yield os.environ
+
+    os.environ.clear()
+    os.environ.update(orginal_env)
 
 
 @pytest.fixture
