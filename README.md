@@ -70,6 +70,15 @@ The secret key Django uses for certain security operations.
 
 \* The key is only set to a default if debug mode is enabled. This is to avoid having a default secret key in a production environment.
 
+#### `DJANGO_SES_ENABLED`
+
+Default: `false`
+
+Setting this to `true` (case insensitive) will enabled sending of emails using AWS SES. If this option is enabled, AWS credentials authorizing SES use must be accessible to the server process. The easiest way to accomplish this is by running the server on an EC2 instance with a role that grants the appropriate permissions, but can also be accomplished using any of the methods described in [the `boto` documentation][boto-credentials].
+
 ## Testing
 
 Tests are run on each push using Travis CI.
+
+
+[boto-credentials]: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#configuring-credentials

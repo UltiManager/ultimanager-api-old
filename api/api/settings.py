@@ -169,6 +169,11 @@ MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', None)
 DEFAULT_FROM_EMAIL = 'UltiManager No-Reply <no-reply@ultimanager.com>'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Enable SES if appropriate flag is set
+DJANGO_SES_ENABLED = os.environ.get('DJANGO_SES_ENABLED', 'false').lower()
+if DJANGO_SES_ENABLED == 'true':
+    EMAIL_BACKEND = 'django_ses.SESBackend'
+
 
 # Django Rest Framework
 
